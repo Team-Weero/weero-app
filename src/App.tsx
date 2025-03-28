@@ -1,8 +1,7 @@
 import { HashRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/Schedule';
-import About from './pages/About';
-import Contact from './pages/Contact';
 import NavigationBar from './components/NavigationBar';
+import Schedule from './pages/Schedule';
+import Home from './pages/Main';
 
 function App() {
   return (
@@ -11,8 +10,7 @@ function App() {
         <div className="container mx-auto">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route path="/schedule" element={<Schedule />} />
           </Routes>
         </div>
         <NavigationBar />

@@ -1,1 +1,35 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "Regular";
+  src: url("./assets/font/WantedSans-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Bold";
+  src: url("./assets/font/WantedSans-Bold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-family: "Regular";
+}
+
+.font-bold {
+  font-family: "Bold";
+}
+
+html, body {
+  height: 100%;
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
