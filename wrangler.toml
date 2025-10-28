@@ -1,3 +1,6 @@
 # Cloudflare Pages 설정 파일
 name = "weero-teacher-app"
 compatibility_date = "2024-01-01"
+
+[pages]
+build_output_dir = "dist"
