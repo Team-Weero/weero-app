@@ -1,6 +1,6 @@
 import type { LoginRequest, LoginResponse } from "./types";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://api.example.com";
+const API_BASE_URL = "https://weero-api.dsmhs.kr";
 
 class ApiClient {
   private baseURL: string;
