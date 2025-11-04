@@ -11,31 +11,39 @@ export async function login(
 ): Promise<LoginResponse> {
   return new Promise((resolve, reject) => {
     // FCM 토큰 가져오기
-    AndroidBridge.getFirebaseTokenAsync(async (deviceToken) => {
-      try {
-        const loginData: LoginRequest = {
-          accountId,
-          password,
-          deviceToken: deviceToken || "",
-        };
+    AndroidBridge.getFirebaseTokenAsync(
+      async (deviceToken) => {
+        try {
+          const loginData: LoginRequest = {
+            accountId,
+            password,
+            deviceToken: deviceToken || "",
+          };
 
-        const response = await ApiClient.login(loginData);
+          const response = await ApiClient.login(loginData);
 
-        // 로그인 성공 시 Refresh Token 저장
-        AndroidBridge.saveRefreshToken(response.refreshToken);
+          // 로그인 성공 시 Refresh Token 저장
+          try {
+            AndroidBridge.saveRefreshToken(response.refreshToken);
+          } catch (error) {
+            console.error("Refresh Token 저장 실패:", error);
+            // Refresh Token 저장 실패해도 로그인은 계속 진행
+          }
 
-        // Access Token을 localStorage에 저장 (웹뷰 환경)
-        localStorage.setItem("accessToken", response.accessToken);
-        localStorage.setItem(
-          "accessTokenExpiresAt",
-          response.accessTokenExpiresAt
-        );
+          // Access Token을 localStorage에 저장 (웹뷰 환경)
+          localStorage.setItem("accessToken", response.accessToken);
+          localStorage.setItem(
+            "accessTokenExpiresAt",
+            response.accessTokenExpiresAt
+          );
 
-        resolve(response);
-      } catch (error) {
-        reject(error);
-      }
-    });
+          resolve(response);
+        } catch (error) {
+          reject(error);
+        }
+      },
+      10000 // 10초 타임아웃
+    );
   });
 }
 

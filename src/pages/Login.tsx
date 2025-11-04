@@ -1,29 +1,39 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/auth";
+import { useModal } from "../contexts/ModalContext";
 
 export default function Login() {
   const navigate = useNavigate();
+  const modal = useModal();
   const [accountId, setAccountId] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError("");
     setIsLoading(true);
 
     try {
       await login(accountId, password);
-      // 로그인 성공 시 메인 페이지로 이동
+
+      // 로그인 성공 알림
+      await modal.showInfo({
+        title: "로그인 성공",
+        message: "환영합니다!",
+      });
+
+      // 메인 페이지로 이동
       navigate("/");
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "로그인에 실패했습니다. 다시 시도해주세요."
-      );
+      // 로그인 실패 시 에러 모달 표시
+      await modal.showError({
+        title: "로그인 실패",
+        message:
+          err instanceof Error
+            ? err.message
+            : "로그인에 실패했습니다.\n아이디와 비밀번호를 확인해주세요.",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -41,13 +51,6 @@ export default function Login() {
 
           {/* 구분선 */}
           <div className="h-1 bg-green-500 my-8"></div>
-
-          {/* 에러 메시지 */}
-          {error && (
-            <div className="mb-6 p-4 border border-red-400 rounded-lg">
-              <p className="text-sm text-red-600">{error}</p>
-            </div>
-          )}
 
           {/* 로그인 폼 */}
           <form onSubmit={handleSubmit} className="space-y-6">

@@ -1,13 +1,15 @@
 import { HashRouter, Routes, Route } from "react-router-dom";
 import NavigationBar from "./components/NavigationBar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { ModalProvider } from "./contexts/ModalContext";
 import Schedule from "./pages/Schedule";
 import Home from "./pages/Main";
 import Login from "./pages/Login";
 
 function App() {
   return (
-    <HashRouter>
+    <ModalProvider>
+      <HashRouter>
       <Routes>
         {/* 로그인 페이지 (보호되지 않음) */}
         <Route path="/login" element={<Login />} />
@@ -41,6 +43,7 @@ function App() {
         />
       </Routes>
     </HashRouter>
+    </ModalProvider>
   );
 }
 
